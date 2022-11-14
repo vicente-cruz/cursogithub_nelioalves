@@ -167,3 +167,8 @@ user.email=vicentesc@daer.rs.gov.br
 	Em geral os próprios frameworks fornecem um .gitignore contendo os arquivos ignorados.
 	Caso não tiver, no próprio google colocam esses arquivos
 	Ex., Google: .net gitignore
+
+15) Quando abre o VIm (ao não colocar msg no commit)
+	Ex: a) alterar arquivo1.html / $ git add . / $ git commit (sem msg)
+		b) Abrirá o Vim:
+			Apertar 'i' / escrever msg / salvar: <esc>:wq (ou x)<enter>
