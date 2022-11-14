@@ -185,3 +185,7 @@ user.email=vicentesc@daer.rs.gov.br
 	Ex: a) alterar arquivo1.html / $ git add . / $ git commit (sem msg)
 		b) Abrirá o Vim:
 			Apertar 'i' / escrever msg / salvar: <esc>:wq (ou x)<enter>
+
+18) Revertendo para commits anteriores SEM EXCLUIR o que foi feito no atual
+	Ex: a) altera arquivo1.html / $ git add . / $ git commit 
+	b) $ git reset --soft HEAD~1 (volta ao penultimo commit)
