@@ -195,4 +195,9 @@ user.email=vicentesc@daer.rs.gov.br
 	$ git add . / $ git commit -m "Varias alteracoes"
 	...
 	$ git reset --hard <codigo commit OU HEAD~<numero>
-	
+
+20) Sincronizando repo atual com o remoto ($ git pull origin <branch>)
+	Ex: supondo que local está igual ao remoto
+	a) Reverter hard para o penultimo commit
+		$ git reset --hard HEAD~1
+	b) $ git pull origin main
