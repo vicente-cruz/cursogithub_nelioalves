@@ -1,0 +1,169 @@
+1) Intro
+Git:
+	Sistema de gerenciamento de versões (versionamento) e repositórios
+GitHub / BitBucket / GitLab: 
+	Sites de hospedagem de repositórios
+
+Cada versão de um arquivo tem um código
+
+2) Repo local e remoto
+	Repositório: um projeto GIT
+
+	Repo Remoto:
+		Guarda a "cópia oficial"
+
+	Repo Local:
+		Gerencia localmente as versões
+		Baixa do Remoto via 'clone' (caso não exista repo local) ou 'pull' (já existe)
+
+3) Instalar GIT
+	Google: git scm
+		Baixar a versão para a máquina
+	Instalar:
+		Recomenda-se desmarcar o Git GUI
+	Usar o VIM como editor (se Linux)
+	Nome do "Branch": Main (padrão atual) ou Master (antigo)
+	PATH: Git from command line and for 3rd party
+	Opção de terminal MinTTY
+	Git Pull: default
+	Credentials: none
+
+4) Config User no GIT:
+$ git config --global user.name "Vicente Cruz"
+$ git config --global user.email "vicentesc@daer.rs.gov.br"
+$ git list
+...
+user.name=Vicente Cruz
+user.email=vicentesc@daer.rs.gov.br
+
+5) Arquivos ocultos e extensões p/windows
+	Inicial -> Opções do explorador de arquivos -> Modo de Exibição
+	Desmarcar -> "Ocultar as extensões dos tipos..."
+	Marcar -> "Mostrar arquivos, pastas... ocultas"
+
+6) Chave SSH p/GitHUB:
+	Não existe autenticação por user/pass, apenas por chave.
+
+	1) Google: github ssh
+	2) Gerar nova chave ssh...
+	3) Digitar:
+	$ ssh-keygen -t ed25519 -C "vicentesc@daer.rs.gov.br"
+		ou
+	$ ssh-keygen -t rsa -b 4096 -C "vicentesc@daer.rs.gov.br"
+	a) Save in (/c/Users/...?) Enter
+	b) Passphrase? Enter
+	c) Passphrase again? Enter
+	d) Em a), abrir id_rsa.pub e copiar txt
+	e) No GitHub -> Settings -> SSH and GPG Keys -> SSH keys -> Add new
+		Colar o txt obtido em d)
+
+7) Salvando 1ª versão do projeto no GitHub
+	1) Criar pasta. Ex: CursoGitHub:
+		Criar dentro dela 2 arquivos html simples (index.html, arquivo1.html)
+		de preferencia no VS Code. Depois: 
+	a) git init
+		Será criada a subpasta .git, não mexer nela.
+
+	b) git add .
+		Envia arquivos para um dir temporário chamado 'stage'
+		Para enviar ao repositório.
+	b.1) git status 
+	...
+	Changes to be committed:
+	  (use "git rm --cached <file>..." to unstage)
+	        new file:   arquivo1.html
+	        new file:   index.html
+
+	c) git commit -m "msg explicando..." (Salva de fato os arquivos no repositorio)
+		[master (root-commit) 86c8529] Criadas paginas index e arquivo1
+		 2 files changed, 26 insertions(+)
+		 create mode 100644 arquivo1.html
+		 create mode 100644 index.html
+	c.1) git status
+		On branch master
+		nothing to commit, working tree clean
+
+	d) git branch -M main (antes de enviar p/github, garantir q arqs estarão em "main", não em master)
+
+	e) Criar novo repositório no GitHub. Ex: CursoGitHub_NelioAlves
+		DEIXAR MARCADO O BOTÃO "SSH", não o html
+		Para poder usar direito a conexão ssh e chaves criada em 6)
+
+	f) git remote add origin git@github.com:vicente-cruz/cursogithub_nelioalves.git
+		Associa repositorio local com o criado no GitHub
+
+	g) git push -u origin main
+		Envia arquivos para o GitHub
+
+8) Alterando arquivo e comitando
+	a) Alterar arquivo1.html
+	b) git add . / git status (mostra arq alterado)
+		No VSCode, clicar no icone GitHub.
+			Vermelho: excluiu / Verde: incluiu.
+
+9) Baixando repo do GitHub p/máquina local:
+	a) Na maquina local, já instalado o GIT e criadas as chaves publica e privada:
+	b) Criar a pasta onde o repo será baixado. Ex: MeuProjetoGit.
+		$ git clone git@github.com:vicente-cruz/cursogithub_nelioalves.git
+	c) entrar na pasta do repo baixado e abrir o vscode
+		$ cd cursogithub_nelioalves / $ code .
+	d) Criar novo arquivo. Ex: arquivo2.html (dar um ctrl+c, v em arquivo1, alterar...)
+	e) $ git add . / git commit ... / git status (ver todos commits)
+	f) Nova alteração em arquivo2 / $ git add, commit ...
+
+10) $ git log --oneline
+	Mostra versoes dos commits resumidamente
+
+11) Git Status e Stage:
+	$ git status
+	modified, untracked (novos não adicionados), deleted: todos pré-commit
+	1) Alterar index.php, criar arquivo3.html (ctrl-c+v do arquivo2) e deletar arquivo2.html
+	2) $ git add . (manda para Stage)/ $ git status
+		Obs: ele entenderá que o arquivo2 foi renomeado para arquivo3, ok.
+	3) $ git reset 
+		Tira do Stage e volta ao estado 1
+	4) Modificar bastante arquivo3 / git add .
+	5) $ git status
+		Agora sim notara que arquivo3 é novo e arquivo2 foi deletado
+	6) $ git reset
+	7) $ git add arquivo3.html / git commit ...
+		Para melhor organização, commit somente do arquivo3 primeiro.
+	8) $ git add . / git commit ...
+		Manda o resto
+
+12) git diff ou Diff no VS Code
+	a) Alterar arquivo1.html e salvar
+	b) $ git diff arquivo1.html
+	c) Ver no Controle de Código-Fonte do VS Code as alterações (mais fácil)
+
+13) Git Checkout:
+	Cada commit tem um código
+	HEAD: último commit feito em um branch (será visto depois)
+	Checkout: restaura um commit anterior
+	a) Voltar ao antepenúltimo commit:
+		$ git checkout 191a138f491efb6be9e63b6f870e451109377961
+		ou mais RECOMENDADO (HEAD~1: penúltimo, HEAD~2: antepenúltimo)
+		$ git checkout HEAD~2
+
+	b) Ver que de fato as alterações daquele commit foram restauradas
+
+	c) NÃO ALTERAR NADA nesse checkout XXXX !!!
+		Se alterou e deu um add sem querer, reverter:
+		$ git reset / $ git clean -df / git checkout -- .
+
+	d) Voltar ao último commit - HEAD:
+		$ git checkout 14df6dd687f6896fbc07e782b79c659c787257d7
+		ou mais RECOMENDADO
+		$ git checkout main
+
+14) .gitignore
+	Arquivos que o git deve ignorar.
+	Git armazena somente os códigos fontes. 
+	Arquivos de config ou vários de frameworks (Laravel, Spring boot) devem ser ignorados.
+	Comumente fica na pasta principal, mas pode ficar em subpastas.
+	Ex: 
+	#Todas classes
+	*.class
+	Em geral os próprios frameworks fornecem um .gitignore contendo os arquivos ignorados.
+	Caso não tiver, no próprio google colocam esses arquivos
+	Ex., Google: .net gitignore
