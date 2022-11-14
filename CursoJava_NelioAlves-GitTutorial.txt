@@ -189,3 +189,10 @@ user.email=vicentesc@daer.rs.gov.br
 18) Revertendo para commits anteriores SEM EXCLUIR o que foi feito no atual
 	Ex: a) altera arquivo1.html / $ git add . / $ git commit 
 	b) $ git reset --soft HEAD~1 (volta ao penultimo commit)
+
+19) Revertendo para commits anteriores EXCLUINDO TODOS depois dele.
+	Fazer umas 4 alterações...
+	$ git add . / $ git commit -m "Varias alteracoes"
+	...
+	$ git reset --hard <codigo commit OU HEAD~<numero>
+	
