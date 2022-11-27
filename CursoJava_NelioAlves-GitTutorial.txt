@@ -22,21 +22,21 @@ Cada versão de um arquivo tem um código
 	Instalar:
 		Recomenda-se desmarcar o Git GUI
 	Usar o VIM como editor (se Linux)
-	Nome do "Branch": Main (padrão atual) ou Master (antigo)
+	Nome do "Branch": Main (padrão atual, usar esse) ou Master (antigo)
 	PATH: Git from command line and for 3rd party
 	Opção de terminal MinTTY
 	Git Pull: default
 	Credentials: none
 
 4) Config User no GIT:
-$ git config --global user.name "Vicente Cruz"
-$ git config --global user.email "vicentesc@daer.rs.gov.br"
+$ git config --global user.name "Nome Do Usuario"
+$ git config --global user.email "user@email.com"
 $ git list
 ...
-user.name=Vicente Cruz
-user.email=vicentesc@daer.rs.gov.br
+user.name=Nome Do Usuario
+user.email=user@email.com
 
-5) Arquivos ocultos e extensões p/windows
+5) Habilitar arquivos ocultos e extensões p/windows
 	Inicial -> Opções do explorador de arquivos -> Modo de Exibição
 	Desmarcar -> "Ocultar as extensões dos tipos..."
 	Marcar -> "Mostrar arquivos, pastas... ocultas"
@@ -89,11 +89,13 @@ user.email=vicentesc@daer.rs.gov.br
 		DEIXAR MARCADO O BOTÃO "SSH", não o html
 		Para poder usar direito a conexão ssh e chaves criada em 6)
 
-	f) git remote add origin git@github.com:vicente-cruz/cursogithub_nelioalves.git
+	f) git remote add origin git@github.com:<NomeDoUsuario>/<NomeDoRepositorio>
+		ex: $ git remote add origin git@github.com:vicente-cruz/cursogithub_nelioalves.git
 		Associa repositorio local com o criado no GitHub
 
 	g) git push -u origin main
 		Envia arquivos para o GitHub
+		Depois desse comando, basta usar apenas $ git push
 
 8) Alterando arquivo e comitando
 	a) Alterar arquivo1.html
@@ -184,20 +186,79 @@ user.email=vicentesc@daer.rs.gov.br
 17) Quando abre o VIm (ao não colocar msg no commit)
 	Ex: a) alterar arquivo1.html / $ git add . / $ git commit (sem msg)
 		b) Abrirá o Vim:
-			Apertar 'i' / escrever msg / salvar: <esc>:wq (ou x)<enter>
+			Apertar 'i' / escrever msg / salvar: <esc>:wq (ou :x)<enter>
 
 18) Revertendo para commits anteriores SEM EXCLUIR o que foi feito no atual
 	Ex: a) altera arquivo1.html / $ git add . / $ git commit 
 	b) $ git reset --soft HEAD~1 (volta ao penultimo commit)
 
-19) Revertendo para commits anteriores EXCLUINDO TODOS depois dele.
+19) Revertendo para commits anteriores EXCLUINDO TODOS depois dele. CUIDADO!
 	Fazer umas 4 alterações...
 	$ git add . / $ git commit -m "Varias alteracoes"
 	...
 	$ git reset --hard <codigo commit OU HEAD~<numero>
 
-20) Sincronizando repo atual com o remoto ($ git pull origin <branch>)
+20) Sincronizando repo atual com o remoto ($ git pull origin <branch repo local, em geral: 'main'>)
 	Ex: supondo que local está igual ao remoto
 	a) Reverter hard para o penultimo commit
 		$ git reset --hard HEAD~1
 	b) $ git pull origin main
+
+21) Problemas ao dar o PUSH
+	1) Não configurou chave SSH no GitHub
+	2) Mais comum! Históricos locais e remotos divergentes
+	Ex: Criar um novo README.md no GitHub (Caso ainda não tenha...)
+		a) <Repositório> -> Add file -> Create new file
+				ou	-> Add a README
+		b) Dar um nome e escrever algo.
+		c) Clicar em Commit a new file
+		d) Por curiosidade, observar o código criado
+		e) Fazer algumas alterações no repositório local
+			Ex: 1) Alterar index.html / $ git add . / $ git commit -m "...
+				2) Alterar arquivo1.html, etc... ||  ||
+		f) $ git push -> dará erro! "... remote have files, etc..."
+		g) $ git pull
+			1) Talvez abra editor para fazer novo "commit padrão para alinhamento", basta aceitar.
+			2) Notará que o próprio GIT colocará o README nos commits anteriores
+		h) $ git push 
+22) Quando fizer o passo 21.g) poderá dar conflito.
+	Ex: Editando o mesmo arquivo, nas mesmas linhas, em dois repositórios diferentes.
+
+23) Simulando um conflito:
+	1) No Github, alterar algum arquivo
+		a) Clicar no repositorio -> Clicar em index.html, p/ex -> Edit this file -> alterar linha 12... 
+		b) Salvar clicando em "Commit changes"
+	2) Fazer alteração na mesma linha do mesmo arquivo no repo local.
+	3) $ git add / git commit 
+	4) $ git push -> Dirá que não está sincronizado com o remoto
+	5) $ git pull -> ... CONFLICT (content): Merge conflict in <nome_do_arquivo...>
+	6) Mostrará no Git Bash: ... (main|MERGING)
+		Ainda não fez a mescla com os arquivos. Aguardando resolver o conflito.
+	7) Abrir o arquivo no VS Code e deixar a alteração correta!
+	8) $ git add <arquivo> | git commit -m "Conflito resolvido!" | voltará a ficar ...(main) 
+	9) Para curiosidade, dar $ git log e ver que estão mantidas todos os commits
+	10) $ git push -> é para ser Ok.
+
+24) Sobrescrever histórico no Github (CUIDADO!)
+	$ git push -f origin main
+	Ex: reverter para 2 commits anteriores
+	a) $ git reset --hard HEAD~2
+
+25) Apontar para outro repositório
+	a) Para ver o atual:
+	$ git remote -v 
+	origin  git@github.com:vicente-cruz/cursogithub_nelioalves.git (fetch)
+	origin  git@github.com:vicente-cruz/cursogithub_nelioalves.git (push)
+
+	b) Criar novo repositorio no Github. Ex: NOVO_REPOSITORIO_cursogithub
+	OBS: não criar o readme.md!!
+
+	c) Se tentar usar "add origin", dará erro:
+	$ git remote add origin git@github.com:vicente-cruz/NOVO_REPOSITORIO_cursogithub.git
+	fatal: remote origin already exists. <-- "ORIGIN" já existe, não dá para adicionar de novo.
+
+	d) É preciso MODIFICAR o link de "ORIGIN":
+	$ git remote set-url origin git@github.com:vicente-cruz/NOVO_REPOSITORIO_cursogithub.git
+
+	e) Fazer um push para confirmar que deu certo:
+	$ git push -u origin main (é preciso colocar o "-u origin main" novamente apenas desta vez)
